@@ -23,7 +23,7 @@ spec:
 
 --- 
 apiVersion : v1
-kind: service 
+kind: Service
 metadata: 
   name: demo-nginx
   namespace: demo-app
