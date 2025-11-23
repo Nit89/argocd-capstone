@@ -1,0 +1,11 @@
+# infra-patch.yaml
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: infra
+      tolerations:
+      - key: "node-type"
+        operator: "Equal"
+        value: "infra"
+        effect: "NoSchedule"
