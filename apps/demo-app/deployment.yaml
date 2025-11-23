@@ -1,0 +1,36 @@
+apiVersion: apps/v1          # <--- FIXED (Deployments are in apps/v1)
+kind: Deployment 
+metadata:
+  name: demo-nginx
+  namespace: demo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:             # <--- FIXED (Capital 'L')
+       app: demo-nginx
+  template:                  # <--- The Blueprint starts here
+    metadata: 
+      labels:
+        app: demo-nginx      # <--- Must match the selector above
+    spec:
+      nodeSelector:
+        node-type: apps      # <--- Send to your "apps" worker node
+      containers:
+        - name: nginx 
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+
+--- 
+apiVersion : v1
+kind: service 
+metadata: 
+  name: demo-nginx
+  namespace: demo-app
+spec:
+  selector:
+    app: demo-nginx
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
