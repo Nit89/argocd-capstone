@@ -7,7 +7,7 @@ spec:
   generators:
   - git: # <-- Use the 'git' generator for path/directory iteration
       repoURL: https://github.com/Nit89/argocd-capstone
-      revision: HEAD
+      revision: master
       directories: # <-- The directories to iterate over
       - path: apps/*
   template:
@@ -18,7 +18,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/Nit89/argocd-capstone
-        targetRevision: HEAD
+        targetRevision: master
         # This path correctly uses the generated path variable
         path: '{{path}}' # Use {{path}} which will be 'apps/demo-app'
       destination:
