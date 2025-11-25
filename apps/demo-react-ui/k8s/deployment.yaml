@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-react
+  namespace: demo-react
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-react
+  template:
+    metadata:
+      labels:
+        app: demo-react
+    spec:
+      containers:
+      - name: demo-react
+        image: nginx:latest
+        ports:
+        - containerPort: 80
