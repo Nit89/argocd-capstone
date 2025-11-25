@@ -13,6 +13,8 @@ spec:
       labels:
         app: demo-react
     spec:
+      nodeSelector:
+        node-type: apps 
       containers:
       - name: demo-react
         image: nginx:latest
