@@ -14,7 +14,12 @@ spec:
         app: prometheus
     spec:
       nodeSelector:
-        node-type: infra        # THIS is important
+        node-type: infra 
+      tolerations: # <--- ADDED THE TOLERATION HERE
+      - key: "node-type"
+        operator: "Equal"
+        value: "infra"
+        effect: "NoSchedule"       # THIS is important
       containers:
       - name: prometheus
         image: prom/prometheus
