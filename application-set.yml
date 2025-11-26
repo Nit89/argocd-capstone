@@ -1,26 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: apps-generator
+  name: nested-apps-generator
   namespace: argocd
 spec:
   generators:
-  - git: # <-- Use the 'git' generator for path/directory iteration
+  
+  # Generator for Nested Apps (apps/APP_NAME/k8s/)
+  - git: 
       repoURL: https://github.com/Nit89/argocd-capstone
       revision: master
-      directories: # <-- The directories to iterate over
-      - path: apps/*
-  template:
-    metadata:
-      # 'path.basename' variable is correctly derived from the 'git' generator
-      name: '{{path.basename}}' 
-    spec:
-      project: default
-      source:
-        repoURL: https://github.com/Nit89/argocd-capstone
-        targetRevision: master
-        # This path correctly uses the generated path variable
-        path: '{{path}}' # Use {{path}} which will be 'apps/demo-app'
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'
+      directories:
+      - path: apps/*/k8s # <-- Finds directories containing 'k8s' subfolder
+      template:
+        metadata:
+          # Extracts the name (e.g., 'demo-backend') from path segment 1
+          name: '{{path.segments.1}}' 
+        spec:
+          project: default
+          source:
+            repoURL: https://github.com/Nit89/argocd-capstone
+            targetRevision: master
+            path: '{{path}}' # e.g., apps/demo-backend/k8s
+          destination:
+            server: https://kubernetes.default.svc
+            # Sets the destination namespace to the app name
+            namespace: '{{path.segments.1}}'
