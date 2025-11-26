@@ -11,7 +11,7 @@ spec:
       repoURL: https://github.com/Nit89/argocd-capstone
       revision: master
       directories:
-      - path: apps/demo-backend/k8s <-- Finds directories containing 'k8s' subfolder
+      - path: demo-backend/k8s <-- Finds directories containing 'k8s' subfolder
       template:
         metadata:
           # Extracts the name (e.g., 'demo-backend') from path segment 1
