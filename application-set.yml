@@ -9,14 +9,10 @@ spec:
       repoURL: https://github.com/Nit89/argocd-capstone
       revision: master
       directories:
-      # 1. Look for any root folder containing a 'k8s' subfolder
-      - path: '*/k8s' 
-        exclude: true  # Optional: Exclude specific non-app folders if needed
+      # --- REMOVE THE 'Exclude: true' LINE ---
+      - path: '*/k8s'
   template:
     metadata:
-      # 2. Extract the name from the FIRST segment (Index 0)
-      # Path: demo-backend / k8s
-      # Segments:    0       /  1
       name: '{{path.segments.0}}' 
     spec:
       project: default
@@ -27,3 +23,10 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{path.segments.0}}'
+      # Keep syncPolicy to create Namespace immediately
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
