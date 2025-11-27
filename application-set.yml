@@ -5,25 +5,23 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - git: 
+  - git:
       repoURL: https://github.com/Nit89/argocd-capstone
       revision: master
       directories:
-      # --- REMOVE THE 'Exclude: true' LINE ---
-      - path: '*/k8s'
+        - path: apps/*      # 👈 detect all apps folders
   template:
     metadata:
-      name: '{{path.segments.0}}' 
+      name: '{{path.basename}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/Nit89/argocd-capstone
         targetRevision: master
-        path: '{{path}}' 
+        path: '{{path}}'      # folder where YAMLs are present
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.segments.0}}'
-      # Keep syncPolicy to create Namespace immediately
+        namespace: '{{path.basename}}'
       syncPolicy:
         automated:
           prune: true
